@@ -28,11 +28,13 @@ def show_current_values(update: Update, context: CallbackContext) -> None:
 def subscribe(update: Update, context: CallbackContext) -> None:
     try:
         chat_id = update.message.chat_id
+        if not context.args:
+            raise
         if add_subscription(chat_id, "".join(context.args)):
             logger.info(f"New subscription: {chat_id}, {''.join(context.args)}")
             update.message.reply_text("Subscribed! Use /unsubscribe if you change your mind. (This will remove all of your alarms.)")
         else:
-            raise Exception()
+            raise
     except Exception as e:
         logger.warning(e)
         update.message.reply_text("Usage: \"/subscribe {token} </> {value}\", example: \"/subscribe DUSD < 1.1\"")
