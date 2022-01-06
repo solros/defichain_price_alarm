@@ -53,17 +53,12 @@ def list_subscriptions(update: Update, context: CallbackContext) -> None:
 
 
 def add_subscription(chatid: str, query: str) -> bool:
-    print(chatid)
-    print(query)
     chatid = str(chatid)
     try:
         data = read_data()
-        print(data)
         subscriptions = data.get(chatid, [])
-        print(subscriptions)
         subscriptions.append(query)
         data[chatid] = subscriptions
-        print(data)
         write_data(data)
         return True
     except:
