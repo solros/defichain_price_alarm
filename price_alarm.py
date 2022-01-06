@@ -1,3 +1,5 @@
+#! /usr/local/bin/python
+
 import requests
 import re
 import operator
