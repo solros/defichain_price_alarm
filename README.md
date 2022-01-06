@@ -8,7 +8,7 @@ Please let me know if you have questions or comments!
 ## Using the Bot
 
 The bot is deployed on an AWS machine.
-You can find (und use) it [here](t.me/defichain_price_alarm_bot).
+You can find (und use) it [here](https://t.me/defichain_price_alarm_bot).
 Please be aware that this is a very early prototype and there are no guarantees. So use it at your own risk. (The main risk is getting annoyed, but you can always `\unsubscribe`...)
 
 It checks conditions every 5 minutes and sends out a notification *every time* the condition is satisfied.
