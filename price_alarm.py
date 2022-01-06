@@ -3,6 +3,7 @@ import re
 import operator
 import sys
 import json
+import os
 
 from tokens import get_token_data
 import price_alarm_secrets
@@ -12,7 +13,9 @@ telegram_chatid = price_alarm_secrets.my_chat_id
 
 INTERVAL = 1800
 
-DATAFILE = "alarm_bot.json"
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+DATAFILE = f"{__location__}/alarm_bot.json"
 
 
 # for testing
