@@ -43,7 +43,7 @@ def subscribe(update: Update, context: CallbackContext) -> None:
 def unsubscribe(update: Update, context: CallbackContext) -> None:
     chat_id = update.message.chat_id
     logger.info(f"Unsubscribing {chat_id}")
-    text = 'Unsubscribe!' if remove_subscriptions(chat_id) else 'You have no active subscriptions.'
+    text = 'Unsubscribed!' if remove_subscriptions(chat_id) else 'You have no active subscriptions.'
     update.message.reply_text(text)
 
 
@@ -72,6 +72,7 @@ def remove_subscriptions(chatid: str) -> bool:
         data = read_data()
         if chatid in data:
             data.pop(chatid)
+            write_data(data)
             return True
         else:
             return False
