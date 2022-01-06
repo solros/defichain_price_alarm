@@ -7,7 +7,7 @@ User=solros
 Group=solros
 Type=simple
 WorkingDirectory=/home/solros/defichain_price_alarm
-ExecStart=python /home/solros/defichain_price_alarm/price_alarm_bot.py
+ExecStart=/usr/local/bin/python /home/solros/defichain_price_alarm/price_alarm_bot.py
 Restart=always
 RestartSec=30
 
