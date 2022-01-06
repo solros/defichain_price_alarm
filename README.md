@@ -9,18 +9,18 @@ Please let me know if you have questions or comments!
 
 The bot is deployed on an AWS machine.
 You can find (und use) it [here](t.me/defichain_price_alarm_bot).
-Please be aware that this is a very early prototype and there are no guarantees. So use it at your own risk. (The main risk is getting annoyed, but you can always `/unsubscribe`...)
+Please be aware that this is a very early prototype and there are no guarantees. So use it at your own risk. (The main risk is getting annoyed, but you can always `\unsubscribe`...)
 
 It checks conditions every 5 minutes and sends out a notification *every time* the condition is satisfied.
 
-* Use `show` to get a list of current token prices (DEX and Oracle) -- warning: still looking very ugly ;-)...
+* Use `\show` to get a list of current token prices (DEX and Oracle) -- warning: still looking very ugly ;-)...
 * Use `\subscribe {token} </> {price}` to subscribe to price notifications. For example, 
 
         \subscribe DFI < 2.5
         
     gets you notified whenever the DFI (on the DEX) falls below 2.5 DUSD. You can subscribe to Oracle prices by specifying `{token}.Oracle` (or the current premium using `{token}.Premium`). For example 
     
-        subscribe TSLA.Oracle > 1500
+        \subscribe TSLA.Oracle > 1500
     
     gets you notified if the Oracle price for Tesla rises above 1500 USD.
 * Use `\unsubscribe` to unsubscribe from all notifications.
