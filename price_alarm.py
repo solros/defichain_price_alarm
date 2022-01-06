@@ -49,11 +49,10 @@ senses = {'<': operator.le, '>': operator.ge}
 def parse_condition(a):
     pattern = "(?P<token>\w+)(:?.(?P<column>\w+))?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
     result = re.match(pattern, a).groupdict()
-    t = result['token']
+    t = result['token'].upper()
     s = result['sense']
     v = float(result['value'])
     c = result['column'] if result['column'] else "DEX"
-    print(t,s,v,c)
     return lambda df: f"{t} ({c}): {df.loc[t, c]} ({s}= {v})" if senses[s](df.loc[t, c], v) else ""
 
 
@@ -111,6 +110,6 @@ def write_data(data: dict) -> None:
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
-        send_price_alarms()
-    else:
         check_conditions(TESTALARMS, "")
+    else:
+        send_price_alarms()
