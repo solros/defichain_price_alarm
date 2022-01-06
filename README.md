@@ -1,11 +1,11 @@
-= DeFiChain Price Alarm =
+# DeFiChain Price Alarm
 
 A Telegram bot to send out price alarms for the DeFiChain DEX.
 It gets the data from the Ocean API. Currently only DFI, DUSD and the stock tokens are supported.
 
 Please let me know if you have questions or comments!
 
-== Using the Bot ==
+## Using the Bot
 
 The bot is deployed on an AWS machine.
 You can find (und use) it [here](t.me/defichain_price_alarm_bot).
@@ -16,7 +16,7 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 * Use `show` to get a list of current token prices (DEX and Oracle) -- warning: still looking very ugly ;-)...
 * Use `\subscribe {token} </> {price}` to subscribe to price notifications. For example, 
 
-        `\subscribe DFI < 2.5
+        \subscribe DFI < 2.5
         
     gets you notified whenever the DFI (on the DEX) falls below 2.5 DUSD. You can subscribe to Oracle prices by specifying `{token}.Oracle` (or the current premium using `{token}.Premium`). For example 
     
@@ -27,7 +27,7 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 * Use `\list` to get a list of your active subscriptions.
 
 
-== TODOs and Known Issues ==
+## TODOs and Known Issues
 
 * The AWS machine is very small (t2.micro because of free tier). Not sure how much load it can handle... 
 * Use a real database (currently: data is dumped to a json file)
