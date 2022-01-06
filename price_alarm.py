@@ -1,4 +1,4 @@
-#! /usr/local/bin/python
+#!/usr/local/bin/python
 
 import requests
 import re
@@ -13,10 +13,8 @@ import price_alarm_secrets
 telegram_token = price_alarm_secrets.telegram_token
 telegram_chatid = price_alarm_secrets.my_chat_id
 
-INTERVAL = 1800
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
 DATAFILE = f"{__location__}/alarm_bot.json"
 
 
@@ -116,3 +114,4 @@ if __name__ == '__main__':
         check_conditions(TESTALARMS, "")
     else:
         send_price_alarms()
+    
