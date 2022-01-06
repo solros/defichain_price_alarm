@@ -54,7 +54,7 @@ def parse_condition(a):
     s = result['sense']
     v = float(result['value'])
     c = result['column'] if result['column'] else "DEX"
-    return lambda df: f"{'{:,.2f}'.format(t)} ({c}): {df.loc[t, c]} ({s}= {v})" if senses[s](df.loc[t, c], v) else ""
+    return lambda df: f"{t} ({c}): {'{:,.2f}'.format(df.loc[t, c])} ({s}= {v})" if senses[s](df.loc[t, c], v) else ""
 
 
 
