@@ -29,7 +29,6 @@ TESTALARMS = [
 
 def check_conditions(alarms, chatid="", t=get_token_data()) -> None:
     for a in alarms:
-        print(a)
         try:
             result = parse_condition(a)(t)
             if result:
@@ -40,7 +39,6 @@ def check_conditions(alarms, chatid="", t=get_token_data()) -> None:
 
 def send_price_alarms() -> None:
     t = get_token_data()
-    print(t)
 
     d = read_data()
     for chatid, l in d.items():
