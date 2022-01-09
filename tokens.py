@@ -11,8 +11,8 @@ apiOracle = "https://ocean.defichain.com/v0/mainnet/prices?size=1000"
 
 def get_token_data() -> pd.DataFrame:
     pd.options.display.float_format = '{:,.2f}'.format
-    df = pd.DataFrame(columns=["Asset", "DEX", "Oracle", "Size", "APR"])
-    df = df.astype({"DEX": float, "Oracle": float, "Size": int, "APR": float})
+    df = pd.DataFrame(columns=["Asset", "DEX", "Oracle", "Size", "APR", "Type", "DEXDFI", "OracleDFI"])
+    df = df.astype({"DEX": float, "Oracle": float, "Size": int, "APR": float, "DEXDFI": float, "OracleDFI": float})
     df = df.set_index('Asset')
     
     get_dex_data(df, apiDex)
@@ -27,22 +27,38 @@ def get_token_data() -> pd.DataFrame:
     
 
 
-def get_dex_data(df, url):
+def get_dex_data(df, url, stocks=True, cryptos=True):
     rDex = requests.get(url).json()
     for p in rDex['data']:
-        if p['tokenB']['symbol'] == "DUSD":
+        if p['tokenB']['symbol'] == "DUSD" and stocks:
             token = p['tokenA']['symbol']
             price = p['priceRatio']['ba']
-        elif p['tokenA']['symbol'] == "DUSD":
+            type = "stock"
+        elif p['tokenA']['symbol'] == "DUSD" and stocks:
             token = "DFI"
             price = p['priceRatio']['ab']
+            type = "stock"
+        elif cryptos:
+            token = p['tokenA']['symbol']
+            priceDFI = p['priceRatio']['ba']
+            type = "crypto"
         else:
             continue
-        df.loc[token, "DEX"] = float(price)
+            
+        if type == "stock":
+            df.loc[token, "DEX"] = float(price)
+        elif type == "crypto":
+            df.loc[token, "DEXDFI"] = float(priceDFI)
         apr = p['apr']['total']
         df.loc[token, "APR"] = float(apr*100)
         size = p['totalLiquidity']['usd']
         df.loc[token, "Size"] = math.floor(float(size))
+        df.loc[token, "Type"] = type
+    
+    DFIprice = df.loc["DFI", "DEX"]
+    df.loc[df['Type'] == "crypto", "DEX"] = DFIprice * df.loc[df['Type'] == "crypto", "DEXDFI"]
+
+
         
 
 
@@ -53,6 +69,9 @@ def get_oracle_data(df, url):
         if token in df.index:
             price = p['price']['aggregated']['amount']
             df.loc[token, "Oracle"] = float(price)
+
+    DFIprice = df.loc["DFI", "Oracle"]
+    df.loc[df['Type'] == "crypto", "OracleDFI"] = df.loc[df['Type'] == "crypto", "Oracle"] / DFIprice
 
 
 if __name__ == '__main__':
