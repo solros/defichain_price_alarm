@@ -34,5 +34,4 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 * Allow muting, editing of alarms and configuring how often the notification is sent (e.g. once, always, once per day?)
 * Error handling:
     * When subscribing, check that the token exists
-* Add crypto tokens (dBTC, dETH, ...)
 * The messages could look much nicer...
