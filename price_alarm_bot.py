@@ -17,7 +17,7 @@ logger.addHandler(fh)
 
 def start(update: Update, context: CallbackContext) -> None:
     """Sends explanation on how to use the bot."""
-    update.message.reply_text('Hi! Use /show to get the current price data or /subscribe to subscribe to price alarms.')
+    update.message.reply_text('Hi! Use /subscribe to subscribe to price alarms (example "/subscribe DFI < 2.2").')
 
 
 def show_current_values(update: Update, context: CallbackContext) -> None:
@@ -116,4 +116,3 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-    
