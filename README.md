@@ -18,11 +18,20 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 
         \subscribe DFI < 2.5
         
-    gets you notified whenever the DFI (on the DEX) falls below 2.5 DUSD. You can subscribe to Oracle prices by specifying `{token}.Oracle` (or the current premium using `{token}.Premium`). For example 
+    gets you notified whenever the DFI (on the DEX) falls below 2.5 DUSD. You can subscribe to Oracle prices by specifying `{token}.Oracle` (or the current premium using `{token}.Premium` -- note that the premium is given in percent). For example 
     
         \subscribe TSLA.Oracle > 1500
     
-    gets you notified if the Oracle price for Tesla rises above 1500 USD.
+    gets you notified if the Oracle price for Tesla rises above 1500 USD. Use
+
+        \subscribe DUDS.Premium < 10
+    
+    to get notified if the DUSD premium is below 10% (i.e., if the price of DUSD does not exceed 1.1).
+
+    By default, DEX prices are always considered *in DUSD*, except for the price of DUSD itself, which is computed as DFI.Oracle/DFI.DEX.
+
+    You can subscribe to quotients of prices, i.e., prices in specified *in another asset*: For example, use `BTC/DFI` to get the price of BTC in DFI or `USDC/USDT` for the quotient of USDC and USDT.
+
 * Use `\unsubscribe` to unsubscribe from all notifications.
 * Use `\list` to get a list of your active subscriptions.
 
