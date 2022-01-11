@@ -72,13 +72,37 @@ def send_price_alarms() -> None:
 senses = {'<': operator.le, '>': operator.ge}
 
 def parse_condition(a):
-    pattern = "(?P<token>\w+)(:?.(?P<column>\w+))?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
+    pattern = "(?P<token>\w+)(:?\.(?P<column>\w+))?\s?(:?.\s?(?P<token2>\w+)(:?\.(?P<column2>\w+))?)?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
     result = re.match(pattern, a).groupdict()
     t = result['token'].upper()
     s = result['sense']
     v = float(result['value'])
     c = result['column'] if result['column'] else "DEX"
-    return lambda df: f"{t} ({c}): {'{:,.2f}'.format(df.loc[t, c])} ({s}= {v})" if senses[s](df.loc[t, c], v) else ""
+    t2 = result['token2'].upper() if result['token2'] else None
+    c2 = result['column2'] if result['column2'] else c
+    return lambda df: get_price(df, s, v, t, c, t2, c2)
+
+def get_price(df, s, v, t, c, t2, c2) -> str:
+    # if we query for DUSD, return DUSD price in USD
+    # computed as DFI.Oracle/DFI.DEX
+    # otherwise return prices in DUSD (hence set DUSD to 1)
+    if t == "DUSD" and t2 is not None:  
+        num = 1
+    else:
+        num = df.loc[t, c]
+
+    if t2 is None or t2 == "DUSD":
+        denom = 1
+    else:
+        denom = df.loc[t2, c2]
+    denom_str = "" if t2 is None else f"/{t2}"
+        
+    quot = num / denom
+    if senses[s](quot, v):
+        return f"{t}{denom_str} ({c}): {'{:,.4f}'.format(quot)} ({s}= {v})"
+    else:
+        return ""
+
 
 
 
