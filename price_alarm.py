@@ -30,13 +30,28 @@ logger.addHandler(fh)
 # for testing
 TESTALARMS = [
     "DUSD < 1.1",
+    "DUSD > 1",
     "DFI.DEX < 2.5",
-    "QQQ.Oracle < 300"
+    "QQQ.Oracle < 300",
+    "arbitrage > 45",
+    "DUSD/USDT < 2",
+    "BTC.Oracle > 40000",
+    "BTC/DFI > 10000",
+    "BTC/QQQ > 1",
+    "BTC.Oracle/QQQ > 1",
+    "USDT/USDC < 1",
+    "USDT/USDC > 1",
+    "DUSD/DUSD > 1",
+    "QQQ/DUSD > 1",
 ]
 
 
 
-def check_conditions(alarms, chatid="", t=get_token_data()) -> None:
+def check_conditions(alarms, chatid="", t=None) -> None:
+    if not t:
+        t = get_token_data()
+        print(t)
+
     for a in alarms:
         try:
             result = parse_condition(a)(t)
