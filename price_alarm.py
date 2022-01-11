@@ -48,7 +48,7 @@ TESTALARMS = [
 
 
 def check_conditions(alarms, chatid="", t=None) -> None:
-    if not t:
+    if t is None:
         t = get_token_data()
         print(t)
 
