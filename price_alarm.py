@@ -96,10 +96,18 @@ def get_price(df, s, v, t, c, t2, c2) -> str:
     else:
         denom = df.loc[t2, c2]
     denom_str = "" if t2 is None else f"/{t2}"
-        
+    
     quot = num / denom
+
+    if t2 == "BTC":
+        price_format = '{:,.8f}'
+    elif c == "Premium" or c == "APR":
+        price_format = '{:,.2f}'
+    else:
+        price_format = '{:,.6f}'
+
     if senses[s](quot, v):
-        return f"{t}{denom_str} ({c}): {'{:,.4f}'.format(quot)} ({s}= {v})"
+        return f"{t}{denom_str} ({c}): {price_format.format(quot)} ({s}= {v})"
     else:
         return ""
 
