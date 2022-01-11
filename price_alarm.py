@@ -43,8 +43,8 @@ def check_conditions(alarms, chatid="", t=get_token_data()) -> None:
             if result:
                 print(result)
                 telegram_send(result, chatid)
-        except:
-            pass
+        except Exception as e:
+            logger.warning(e)
 
 def send_price_alarms() -> None:
     t = get_token_data()
