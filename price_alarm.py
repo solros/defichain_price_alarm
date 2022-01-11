@@ -6,6 +6,7 @@ import operator
 import sys
 import json
 import os
+import logging
 
 from tokens import get_token_data
 import price_alarm_secrets
@@ -16,6 +17,14 @@ telegram_chatid = price_alarm_secrets.my_chat_id
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 DATAFILE = f"{__location__}/alarm_bot.json"
+
+
+# Enable logging
+logger = logging.getLogger('price_alarm_bot')
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler('price_alarm_bot.log')
+fh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+logger.addHandler(fh)
 
 
 # for testing

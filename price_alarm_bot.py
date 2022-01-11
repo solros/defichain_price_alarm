@@ -8,13 +8,6 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 from price_alarm import *
 import price_alarm_secrets
 
-# Enable logging
-logger = logging.getLogger('price_alarm_bot')
-logger.setLevel(logging.INFO)
-fh = logging.FileHandler('price_alarm_bot.log')
-fh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
-logger.addHandler(fh)
-
 def start(update: Update, context: CallbackContext) -> None:
     """Sends explanation on how to use the bot."""
     update.message.reply_text('Hi! Use /subscribe to subscribe to price alarms (example "/subscribe DFI < 2.2").')
