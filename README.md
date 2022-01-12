@@ -44,3 +44,10 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 * Error handling:
     * When subscribing, check that the token exists
 * The messages could look much nicer...
+
+
+## Buy me a drink
+
+If this is useful for you, you can support the project with DFI donations:
+
+dDw3VfUmhEdUd5FqP1Cko2FAbheEWmXif1
