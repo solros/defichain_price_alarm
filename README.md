@@ -24,7 +24,7 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
     
     gets you notified if the Oracle price for Tesla rises above 1500 USD. Use
 
-        /subscribe DUDS.Premium < 10
+        /subscribe DUSD.Premium < 10
     
     to get notified if the DUSD premium is below 10% (i.e., if the price of DUSD does not exceed 1.1).
 
