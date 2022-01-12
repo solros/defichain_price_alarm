@@ -48,6 +48,6 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 
 ## Buy me a drink
 
-If this is useful for you, you can support the project with DFI donations:
+If this is useful for you, you can support me and the project with DFI donations:
 
 dDw3VfUmhEdUd5FqP1Cko2FAbheEWmXif1
