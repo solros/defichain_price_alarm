@@ -9,22 +9,22 @@ Please let me know if you have questions or comments!
 
 The bot is deployed on an AWS machine.
 You can find (und use) it [here](https://t.me/defichain_price_alarm_bot).
-Please be aware that this is a very early prototype and there are no guarantees. So use it at your own risk. (The main risk is getting annoyed, but you can always `\unsubscribe`...)
+Please be aware that this is a very early prototype and there are no guarantees. So use it at your own risk. (The main risk is getting annoyed, but you can always `/unsubscribe`...)
 
 It checks conditions every 5 minutes and sends out a notification *every time* the condition is satisfied.
 
-* Use `\show` to get a list of current token prices (DEX and Oracle) -- warning: still looking very ugly ;-)...
-* Use `\subscribe {token} </> {price}` to subscribe to price notifications. For example, 
+* Use `/show` to get a list of current token prices (DEX and Oracle) -- warning: still looking very ugly ;-)...
+* Use `/subscribe {token} </> {price}` to subscribe to price notifications. For example, 
 
-        \subscribe DFI < 2.5
+        /subscribe DFI < 2.5
         
     gets you notified whenever the DFI (on the DEX) falls below 2.5 DUSD. You can subscribe to Oracle prices by specifying `{token}.Oracle` (or the current premium using `{token}.Premium` -- note that the premium is given in percent). For example 
     
-        \subscribe TSLA.Oracle > 1500
+        /subscribe TSLA.Oracle > 1500
     
     gets you notified if the Oracle price for Tesla rises above 1500 USD. Use
 
-        \subscribe DUDS.Premium < 10
+        /subscribe DUDS.Premium < 10
     
     to get notified if the DUSD premium is below 10% (i.e., if the price of DUSD does not exceed 1.1).
 
@@ -32,8 +32,8 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 
     You can subscribe to quotients of prices, i.e., prices in specified *in another asset*: For example, use `BTC/DFI` to get the price of BTC in DFI or `USDC/USDT` for the quotient of USDC and USDT.
 
-* Use `\unsubscribe` to unsubscribe from all notifications.
-* Use `\list` to get a list of your active subscriptions.
+* Use `/unsubscribe` to unsubscribe from all notifications.
+* Use `/list` to get a list of your active subscriptions.
 
 
 ## TODOs and Known Issues
