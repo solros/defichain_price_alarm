@@ -41,8 +41,7 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 * The AWS machine is very small (t2.micro because of free tier). Not sure how much load it can handle... 
 * Use a real database (currently: data is dumped to a json file)
 * Allow muting, editing of alarms and configuring how often the notification is sent (e.g. once, always, once per day?)
-* Error handling:
-    * When subscribing, check that the token exists
+* Error handling
 * The messages could look much nicer...
 
 

@@ -22,12 +22,12 @@ def subscribe(update: Update, context: CallbackContext) -> None:
     try:
         chat_id = update.message.chat_id
         if not context.args:
-            raise
-        if add_subscription(chat_id, "".join(context.args)):
-            logger.info(f"New subscription: {chat_id}, {''.join(context.args)}")
-            update.message.reply_text("Subscribed! Use /unsubscribe if you change your mind. (This will remove all of your alarms.)")
-        else:
-            raise
+            raise Exception()
+        message = add_subscription(chat_id, "".join(context.args))
+        logger.info(f"New subscription: {chat_id}, {''.join(context.args)}")
+        update.message.reply_text(f"{message}  Use /unsubscribe if you change your mind. (This will remove all of your alarms.)")
+    except QueryException as e:
+        update.message.reply_text(str(e))
     except Exception as e:
         logger.warning(e)
         update.message.reply_text("Usage: \"/subscribe {token} </> {value}\", example: \"/subscribe DUSD < 1.1\"")
@@ -47,17 +47,15 @@ def list_subscriptions(update: Update, context: CallbackContext) -> None:
 
 
 
-def add_subscription(chatid: str, query: str) -> bool:
+def add_subscription(chatid: str, query: str) -> str:
     chatid = str(chatid)
-    try:
-        data = read_data()
-        subscriptions = data.get(chatid, [])
-        subscriptions.append(query)
-        data[chatid] = subscriptions
-        write_data(data)
-        return True
-    except:
-        return False
+    query = validate_query(query)
+    data = read_data()
+    subscriptions = data.get(chatid, [])
+    subscriptions.append(query)
+    data[chatid] = subscriptions
+    write_data(data)
+    return f"Successfully subscribed to: {query}"
 
 def remove_subscriptions(chatid: str) -> bool:
     chatid = str(chatid)

@@ -17,6 +17,7 @@ telegram_chatid = price_alarm_secrets.my_chat_id
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 DATAFILE = f"{__location__}/alarm_bot.json"
+TOKENFILE = f"{__location__}/tokens.json"
 
 
 # Enable logging
@@ -33,16 +34,22 @@ TESTALARMS = [
     "DUSD > 1",
     "DFI.DEX < 2.5",
     "QQQ.Oracle < 300",
-    "arbitrage > 45",
     "DUSD/USDT < 2",
     "BTC.Oracle > 40000",
     "BTC/DFI > 10000",
+    "DFI/BTC > 0",
+    "BTC/USDT > 1",
     "BTC/QQQ > 1",
     "BTC.Oracle/QQQ > 1",
     "USDT/USDC < 1",
     "USDT/USDC > 1",
     "DUSD/DUSD > 1",
     "QQQ/DUSD > 1",
+    "DUSD.Premium > 1",
+    "dbtc > 30000",
+    "duds >= 0",
+    "dusd.premum > 5",
+    "bla bla bla",
 ]
 
 
@@ -50,30 +57,81 @@ TESTALARMS = [
 def check_conditions(alarms, chatid="", t=None) -> None:
     if t is None:
         t = get_token_data()
-        print(t)
+    print(t)
 
     for a in alarms:
         try:
             result = parse_condition(a)(t)
             if result:
-                print(result)
                 telegram_send(result, chatid)
         except Exception as e:
             logger.warning(e)
 
 def send_price_alarms() -> None:
     t = get_token_data()
+    write_token_list_to_file(t)
 
     d = read_data()
     for chatid, l in d.items():
         check_conditions(l, chatid, t)
 
 
+def write_token_list_to_file(t):
+    token_list = t.index.tolist()
+    with open(TOKENFILE, 'w') as file:
+        json.dump(token_list, file)
+
+def read_token_list():
+    try:
+        with open(TOKENFILE, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        t = get_token_data()
+        write_token_list_to_file(t)
+        return t.index.tolist()
+        
+
+def validate_query(query: str) -> str:
+    tokens = read_token_list()
+    result = re.match(query_pattern, query).groupdict()
+    t = validate_token(tokens, result['token'])
+    s = result['sense']
+    v = float(result['value'])
+    c = validate_col(result['column']) if result['column'] else "DEX"
+    t2 = validate_token(tokens, result['token2']) if result['token2'] else None
+    c2 = validate_col(result['column2']) if result['column2'] else c
+
+    c_str = f".{c}" if result['column'] else ""
+    c2_str = f".{c2}" if result['column2'] else ""
+    t2_str = f"/{t2}{c2_str}" if result['token2'] else ""
+
+    return f"{t}{c_str}{t2_str} {s}= {v}"
+
+
+def validate_token(tokens: list[str], t: str) -> str:
+    if t.upper() in tokens:
+        return t.upper()
+    if t.upper().startswith("D") and t.upper()[1:] in tokens:
+        return t.upper()[1:]
+    raise QueryException(f"Unknown token: {t}")
+
+def validate_col(c: str) -> str:
+    if c.upper() == "DEX":
+        return "DEX"
+    if c.upper() == "APR":
+        return "APR"
+    if c.upper() == "PREMIUM":
+        return "Premium"
+    if c.upper() == "ORACLE":
+        return "Oracle"
+    raise QueryException(f"Unknown property: {c}")
+
+
 senses = {'<': operator.le, '>': operator.ge}
+query_pattern = "(?P<token>\w+)(:?\.(?P<column>\w+))?\s?(:?.\s?(?P<token2>\w+)(:?\.(?P<column2>\w+))?)?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
 
 def parse_condition(a):
-    pattern = "(?P<token>\w+)(:?\.(?P<column>\w+))?\s?(:?.\s?(?P<token2>\w+)(:?\.(?P<column2>\w+))?)?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
-    result = re.match(pattern, a).groupdict()
+    result = re.match(query_pattern, a).groupdict()
     t = result['token'].upper()
     s = result['sense']
     v = float(result['value'])
@@ -163,6 +221,10 @@ def write_data(data: dict) -> None:
         j = {"subscribers": data}
         json.dump(j, file)
 
+
+class QueryException(Exception):
+    def __init__(self, msg: str):
+        super().__init__(msg)
 
 
 if __name__ == '__main__':
