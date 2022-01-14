@@ -50,6 +50,7 @@ TESTALARMS = [
     "duds >= 0",
     "dusd.premum > 5",
     "bla bla bla",
+    "dfi/btc > 0.00007",
 ]
 
 
@@ -128,7 +129,7 @@ def validate_col(c: str) -> str:
 
 
 senses = {'<': operator.le, '>': operator.ge}
-query_pattern = "(?P<token>\w+)(:?\.(?P<column>\w+))?\s?(:?.\s?(?P<token2>\w+)(:?\.(?P<column2>\w+))?)?\s?(?P<sense><|>)=?\s?(?P<value>[\d.]+)"
+query_pattern = "(?P<token>\w+)(:?\.(?P<column>\w+))?\s?(:?.\s?(?P<token2>\w+)(:?\.(?P<column2>\w+))?)?\s?(?P<sense><|>)=?\s?(?P<value>[-e\d.]+)"
 
 def parse_condition(a):
     result = re.match(query_pattern, a).groupdict()
