@@ -1,5 +1,6 @@
 *secrets*
 *.log
 alarm_bot.json
+tokens.json
 __pycache__
 *.pyc
