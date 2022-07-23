@@ -49,4 +49,4 @@ It checks conditions every 5 minutes and sends out a notification *every time* t
 
 If this is useful for you, you can support me and the project with DFI donations:
 
-dDw3VfUmhEdUd5FqP1Cko2FAbheEWmXif1
+dLxgbfwjWtPibyVjknk6gFWB3u7ReHTZEJ
