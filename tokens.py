@@ -30,31 +30,34 @@ def get_token_data() -> pd.DataFrame:
 def get_dex_data(df, url, stocks=True, cryptos=True):
     rDex = requests.get(url).json()
     for p in rDex['data']:
-        if p['tokenB']['symbol'] == "DUSD" and stocks:
-            token = p['tokenA']['symbol']
-            price = p['priceRatio']['ba']
-            type = "stock"
-        elif p['tokenA']['symbol'] == "DUSD" and stocks:
-            token = "DFI"
-            price = p['priceRatio']['ab']
-            type = "stock"
-        elif cryptos:
-            token = p['tokenA']['symbol']
-            priceDFI = p['priceRatio']['ba']
-            type = "crypto"
-        else:
-            continue
-            
-        if type == "stock":
-            df.loc[token, "DEX"] = float(price)
-        elif type == "crypto":
-            df.loc[token, "DEXDFI"] = float(priceDFI)
-        apr = p['apr']['total']
-        df.loc[token, "APR"] = float(apr*100)
-        size = p['totalLiquidity']['usd']
-        df.loc[token, "Size"] = math.floor(float(size))
-        df.loc[token, "Type"] = type
-    
+        try:
+            if p['tokenB']['symbol'] == "DUSD" and stocks:
+                token = p['tokenA']['symbol']
+                price = p['priceRatio']['ba']
+                type = "stock"
+            elif p['tokenA']['symbol'] == "DUSD" and stocks:
+                token = "DFI"
+                price = p['priceRatio']['ab']
+                type = "stock"
+            elif cryptos:
+                token = p['tokenA']['symbol']
+                priceDFI = p['priceRatio']['ba']
+                type = "crypto"
+            else:
+                continue
+                
+            if type == "stock":
+                df.loc[token, "DEX"] = float(price)
+            elif type == "crypto":
+                df.loc[token, "DEXDFI"] = float(priceDFI)
+            apr = p['apr']['total']
+            df.loc[token, "APR"] = float(apr*100) if apr is not None else 0
+            size = p['totalLiquidity']['usd']
+            df.loc[token, "Size"] = math.floor(float(size))
+            df.loc[token, "Type"] = type
+        except Exception as e:
+            print(e)
+
     DFIprice = df.loc["DFI", "DEX"]
     df.loc[df['Type'] == "crypto", "DEX"] = DFIprice * df.loc[df['Type'] == "crypto", "DEXDFI"]
 
